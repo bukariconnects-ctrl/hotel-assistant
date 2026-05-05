@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     // eslint-disable-next-line
+    //=========
     const pdfParse = require("pdf-parse/lib/pdf-parse.js");
     const pdfData = await pdfParse(buffer);
     const rawText: string = pdfData.text;
