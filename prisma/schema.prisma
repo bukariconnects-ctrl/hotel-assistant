@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+model Hotel {
+  id          String     @id @default(cuid())
+  name        String
+  slug           String     @unique
+  description    String?
+  welcomeMessage String?    @map("welcome_message")
+  contactPhone   String?    @map("contact_phone")
+  website        String?
+  location       String?
+  ownerId        String?    @map("owner_id")
+  status         String     @default("active")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  documents    Document[]
+  chatSessions ChatSession[]
+
+  @@map("hotels")
+}
+
+model Document {
+  id         String   @id @default(cuid())
+  hotelId    String   @map("hotel_id")
+  fileName   String   @map("file_name")
+  fileType   String   @map("file_type")
+  fileSize   Int      @map("file_size")
+  storagePath String  @map("storage_path")
+  status     String   @default("processing")
+  category   String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  hotel    Hotel             @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  sections DocumentSection[]
+
+  @@map("documents")
+}
+
+model DocumentSection {
+  id         String                    @id @default(cuid())
+  documentId String                    @map("document_id")
+  content    String
+  metadata   Json                      @default("{}")
+  embedding  Unsupported("vector(768)")?
+  createdAt  DateTime                  @default(now()) @map("created_at")
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("document_sections")
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  hotelId   String   @map("hotel_id")
+  guestName String?  @map("guest_name")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  hotel    Hotel         @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+
+  @@map("chat_sessions")
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  sessionId String   @map("session_id")
+  role      String
+  content   String
+  metadata  Json?    @default("{}")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
