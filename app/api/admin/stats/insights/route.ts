@@ -4,6 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 function getAuthClient() {
   const cookieStore = cookies();
