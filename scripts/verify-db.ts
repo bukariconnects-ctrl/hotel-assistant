@@ -14,6 +14,7 @@ async function main() {
   const testHotel = await prisma.hotel.create({
     data: {
       name: "Test Grand Hotel",
+      slug: "test-grand-hotel",
       description: "Verification test record",
     },
   });

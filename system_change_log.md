@@ -957,4 +957,25 @@ Added chat message persistence, a Chat History management page for hotel owners,
 
 ---
 
+### [v1.4.1] — 2026-05-05 — Hotfix: Hotels not appearing in browse page
+
+**Status:** ✅ Complete
+
+#### Root Cause
+The `/hotels` page was a client component (`"use client"`) that fetched hotel data via `useEffect` + `fetch("/api/hotels")`. Next.js 14's Router Cache would cache the page RSC payload during client-side navigation, meaning the `useEffect` wouldn't always re-run when navigating back to `/hotels`. This caused newly added hotels to not appear.
+
+#### Fix
+- **Converted `app/hotels/page.tsx` to a Server Component** — data is now fetched directly from Supabase server-side using `supabaseAdmin`, eliminating all client-side caching issues.
+- Added `export const dynamic = "force-dynamic"` and `export const revalidate = 0` to ensure the page is never statically cached.
+- **Extracted animated hotel cards** into a new client component `components/hotel-grid.tsx` (receives hotels as props from the server component).
+
+#### Files Created
+- `components/hotel-grid.tsx` — Client component for animated hotel card grid
+
+#### Files Modified
+- `app/hotels/page.tsx` — Rewritten from client component to async Server Component
+- `app/api/hotels/route.ts` — Cleaned up (removed debug logging)
+
+---
+
 *End of log.*

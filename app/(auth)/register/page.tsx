@@ -46,7 +46,8 @@ export default function RegisterPage() {
       return;
     }
 
-    // Step 2: Sign in immediately (sets cookies via @supabase/ssr)
+    // Step 2: Clear any stale auth cookies, then sign in
+    await supabase.auth.signOut();
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,

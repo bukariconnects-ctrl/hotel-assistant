@@ -16,9 +16,5 @@ export async function GET() {
     return NextResponse.json([], { status: 200 });
   }
 
-  console.log(`[hotels] Returning ${hotels?.length ?? 0} hotels:`, hotels?.map(h => h.name));
-
-  const res = NextResponse.json(hotels ?? []);
-  res.headers.set("Cache-Control", "no-store, max-age=0");
-  return res;
+  return NextResponse.json(hotels ?? []);
 }
