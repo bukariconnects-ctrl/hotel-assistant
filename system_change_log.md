@@ -978,4 +978,71 @@ The `/hotels` page was a client component (`"use client"`) that fetched hotel da
 
 ---
 
+### [v1.5.0] — 2026-05-05 — Arabic Localization & RTL Support
+
+**Status:** ✅ Complete
+
+#### Overview
+Full Arabic localization of the entire application. Set HTML direction to RTL, translated all user-facing text across every page and component, and fixed chat message alignment/ordering for proper RTL display.
+
+#### Changes Made
+
+**1. `app/layout.tsx` — RTL Foundation**
+- `<html lang="en">` → `<html lang="ar" dir="rtl">`
+- Metadata title/description translated to Arabic
+
+**2. `components/nav-bar.tsx` — Arabic Navigation**
+- All nav links translated: تصفح الفنادق, لوحة التحكم, خروج, تسجيل الدخول, تسجيل جديد
+- Brand name: HotelAI → فندق ذكي
+
+**3. `app/page.tsx` — Arabic Landing Page**
+- Hero section, features (6 cards), pricing (3 tiers), CTA, footer — all translated
+- Pricing plan names: مجاني, احترافي, مؤسسات
+- Feature titles and descriptions fully localized
+
+**4. `app/hotels/page.tsx` + `components/hotel-grid.tsx` — Arabic Hotel Directory**
+- Page title, description, empty state, card buttons all translated
+- Arrow directions flipped for RTL (→ to ←)
+
+**5. `app/(auth)/login/page.tsx` — Arabic Login**
+- Labels, placeholders, buttons, links translated
+- Error messages remain from server (English) but UI chrome is Arabic
+
+**6. `app/(auth)/register/page.tsx` — Arabic Registration**
+- All form labels, validation messages, placeholders translated
+- Client-side errors (password mismatch, length) in Arabic
+
+**7. `app/chat/[slug]/page.tsx` — Arabic Chat + RTL Message Alignment**
+- Chat container uses `dir="ltr"` to keep message flow (user=right, AI=left) correct
+- Header and input bar use `dir="rtl"` for Arabic text direction
+- Message bubbles have `dir="rtl"` and `text-right` for proper Arabic text rendering
+- Bubble corners swapped for RTL: user gets `rounded-bl-sm`, AI gets `rounded-br-sm`
+- All UI text translated: header status, suggestions, placeholder, footer, error messages
+- Not-found page translated
+
+**8. `app/admin/onboarding/page.tsx` — Arabic Onboarding**
+- Form labels, placeholders, validation messages, button text translated
+- Slug validation error message in Arabic
+
+**9. `app/admin/page.tsx` — Arabic Admin Dashboard**
+- Header nav links, stat cards, recent activity, insights section translated
+- Upload section: labels, drag-drop text, pipeline status, result messages translated
+- Knowledge base table: headers, empty state, status badges (نشط, غير نشط, قيد المعالجة, خطأ, معلق)
+- Delete confirmation dialog fully translated
+- Upload steps translated
+
+**10. `app/admin/settings/page.tsx` — Arabic Settings**
+- All form labels, placeholders, save button, toast messages translated
+
+**11. `app/admin/chats/page.tsx` — Arabic Chat History**
+- Table headers, search placeholder, empty states, transcript modal translated
+- Guest label default: "Guest" → "ضيف"
+
+#### RTL Architecture Notes
+- Global `dir="rtl"` on `<html>` handles most layout mirroring automatically via Tailwind/CSS
+- Chat page uses `dir="ltr"` on the main container to preserve standard chat message ordering (user messages on right, AI on left), with `dir="rtl"` on individual text elements for Arabic rendering
+- Table header alignment adjusted: `text-left` → `text-right` for RTL tables, actions column uses `text-left`
+
+---
+
 *End of log.*

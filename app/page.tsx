@@ -16,71 +16,71 @@ const fadeUp = {
 const FEATURES = [
   {
     icon: "🤖",
-    title: "AI-Powered Answers",
-    desc: "Upload your hotel documents and let AI handle guest questions 24/7 — based on your actual policies and services.",
+    title: "إجابات مدعومة بالذكاء الاصطناعي",
+    desc: "ارفع مستندات فندقك ودع الذكاء الاصطناعي يجيب على أسئلة الضيوف على مدار الساعة — بناءً على سياساتك وخدماتك الفعلية.",
   },
   {
     icon: "🌍",
-    title: "Multilingual Support",
-    desc: "Guests can chat in any language. The AI responds in their language automatically — Arabic, English, French, and more.",
+    title: "دعم متعدد اللغات",
+    desc: "يمكن للضيوف التحدث بأي لغة. يرد المساعد بلغتهم تلقائياً — العربية والإنجليزية والفرنسية وغيرها.",
   },
   {
     icon: "⚡",
-    title: "5-Minute Setup",
-    desc: "Register, create your hotel, upload a PDF — your AI assistant is live. No coding, no integrations.",
+    title: "إعداد في 5 دقائق",
+    desc: "سجّل، أنشئ فندقك، ارفع ملف PDF — مساعدك الذكي جاهز للعمل. بدون برمجة أو تكاملات.",
   },
   {
     icon: "🔒",
-    title: "Data Isolation",
-    desc: "Each hotel's knowledge base is completely separate. Your data is never shared or mixed with other hotels.",
+    title: "عزل البيانات",
+    desc: "قاعدة معرفة كل فندق منفصلة تماماً. بياناتك لا تُشارك أو تُخلط مع فنادق أخرى.",
   },
   {
     icon: "📊",
-    title: "Smart Retrieval (RAG)",
-    desc: "Powered by vector search and Gemini AI. Only the most relevant information is used to craft each answer.",
+    title: "استرجاع ذكي (RAG)",
+    desc: "مدعوم بالبحث المتجهي وذكاء Gemini. يتم استخدام المعلومات الأكثر صلة فقط لصياغة كل إجابة.",
   },
   {
     icon: "🏨",
-    title: "Multi-Hotel Ready",
-    desc: "Manage multiple properties from a single account. Each hotel gets its own slug, chat page, and knowledge base.",
+    title: "جاهز لعدة فنادق",
+    desc: "أدر عدة فنادق من حساب واحد. كل فندق يحصل على رابط خاص وصفحة محادثة وقاعدة معرفة مستقلة.",
   },
 ];
 
 const PRICING = [
   {
-    name: "Free",
+    name: "مجاني",
     price: "$0",
-    period: "forever",
-    features: ["1 Hotel", "5 Documents", "100 Chats/day", "Community Support"],
-    cta: "Get Started",
+    period: "للأبد",
+    features: ["فندق واحد", "5 مستندات", "100 محادثة/يوم", "دعم مجتمعي"],
+    cta: "ابدأ الآن",
     highlight: false,
   },
   {
-    name: "Pro",
+    name: "احترافي",
     price: "$29",
-    period: "/month",
+    period: "/شهر",
     features: [
-      "5 Hotels",
-      "Unlimited Documents",
-      "Unlimited Chats",
-      "Priority Support",
-      "Custom Branding",
+      "5 فنادق",
+      "مستندات غير محدودة",
+      "محادثات غير محدودة",
+      "دعم أولوية",
+      "علامة تجارية مخصصة",
     ],
-    cta: "Coming Soon",
+    cta: "قريباً",
     highlight: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
+    name: "مؤسسات",
+    price: "مخصص",
     period: "",
     features: [
-      "Unlimited Hotels",
-      "Dedicated Infrastructure",
-      "SLA & On-boarding",
-      "API Access",
-      "White Label",
+      "فنادق غير محدودة",
+      "بنية تحتية مخصصة",
+      "اتفاقية مستوى خدمة",
+      "وصول API",
+      "علامة بيضاء",
     ],
-    cta: "Contact Us",
+    cta: "تواصل معنا",
     highlight: false,
   },
 ];
@@ -100,8 +100,8 @@ export default function Home() {
             variants={fadeUp}
             custom={0}
           >
-            <span className="inline-block text-xs font-semibold tracking-wider uppercase text-indigo-400 bg-indigo-950 border border-indigo-800 px-3 py-1 rounded-full mb-6">
-              AI-Powered Hotel Concierge
+            <span className="inline-block text-xs font-semibold tracking-wider text-indigo-400 bg-indigo-950 border border-indigo-800 px-3 py-1 rounded-full mb-6">
+              مساعد فندقي مدعوم بالذكاء الاصطناعي
             </span>
           </motion.div>
 
@@ -112,12 +112,12 @@ export default function Home() {
             variants={fadeUp}
             custom={1}
           >
-            Your Hotel&apos;s{" "}
+            مساعد فندقك{" "}
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-              AI Assistant
+              الذكي
             </span>
             <br />
-            That Never Sleeps
+            الذي لا ينام
           </motion.h1>
 
           <motion.p
@@ -127,9 +127,9 @@ export default function Home() {
             variants={fadeUp}
             custom={2}
           >
-            Upload your hotel documents. Get a smart, multilingual AI chatbot
-            that answers guest questions instantly — based on your actual
-            policies, menus, and services.
+            ارفع مستندات فندقك. احصل على مساعد ذكي متعدد اللغات
+            يجيب على أسئلة الضيوف فوراً — بناءً على سياساتك
+            وقوائمك وخدماتك الفعلية.
           </motion.p>
 
           <motion.div
@@ -143,13 +143,13 @@ export default function Home() {
               href="/register"
               className="px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base transition-colors shadow-lg shadow-indigo-600/20"
             >
-              Register Your Hotel
+              سجّل فندقك
             </Link>
             <Link
               href="/hotels"
               className="px-8 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-base border border-slate-700 transition-colors"
             >
-              Browse Guest Chats
+              تصفح الفنادق
             </Link>
           </motion.div>
         </div>
@@ -167,10 +167,10 @@ export default function Home() {
             custom={0}
           >
             <h2 className="text-3xl font-bold text-white">
-              Everything your hotel needs
+              كل ما يحتاجه فندقك
             </h2>
             <p className="mt-3 text-slate-400 max-w-xl mx-auto">
-              A complete AI concierge solution — set up in minutes, not months.
+              حل مساعد ذكي متكامل — جاهز في دقائق وليس أشهر.
             </p>
           </motion.div>
 
@@ -210,10 +210,10 @@ export default function Home() {
             custom={0}
           >
             <h2 className="text-3xl font-bold text-white">
-              Simple, transparent pricing
+              أسعار بسيطة وشفافة
             </h2>
             <p className="mt-3 text-slate-400">
-              Start free. Upgrade when you grow.
+              ابدأ مجاناً. قم بالترقية عندما تكبر.
             </p>
           </motion.div>
 
@@ -257,7 +257,7 @@ export default function Home() {
                   ))}
                 </ul>
                 <Link
-                  href={plan.name === "Free" ? "/register" : "#"}
+                  href={plan.name === "مجاني" ? "/register" : "#"}
                   className={`mt-8 text-center py-3 rounded-lg font-medium text-sm transition-colors ${
                     plan.highlight
                       ? "bg-indigo-600 hover:bg-indigo-500 text-white"
@@ -283,7 +283,7 @@ export default function Home() {
             variants={fadeUp}
             custom={0}
           >
-            Ready to elevate your guest experience?
+            هل أنت مستعد لتطوير تجربة ضيوفك؟
           </motion.h2>
           <motion.p
             className="mt-4 text-slate-400"
@@ -293,8 +293,8 @@ export default function Home() {
             variants={fadeUp}
             custom={1}
           >
-            Join hotels worldwide using AI to provide instant, accurate answers
-            to every guest question.
+            انضم للفنادق حول العالم التي تستخدم الذكاء الاصطناعي لتقديم
+            إجابات فورية ودقيقة لكل سؤال من الضيوف.
           </motion.p>
           <motion.div
             className="mt-8"
@@ -308,7 +308,7 @@ export default function Home() {
               href="/register"
               className="inline-block px-10 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base transition-colors shadow-lg shadow-indigo-600/20"
             >
-              Get Started for Free
+              ابدأ مجاناً
             </Link>
           </motion.div>
         </div>
@@ -322,11 +322,11 @@ export default function Home() {
               H
             </div>
             <span className="text-sm font-semibold text-slate-400">
-              HotelAI
+              فندق ذكي
             </span>
           </div>
           <p className="text-xs text-slate-600">
-            {new Date().getFullYear()} HotelAI. Powered by Gemini &
+            {new Date().getFullYear()} فندق ذكي. مدعوم بـ Gemini و
             Supabase.
           </p>
         </div>

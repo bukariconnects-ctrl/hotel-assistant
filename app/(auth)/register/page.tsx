@@ -21,12 +21,12 @@ export default function RegisterPage() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("كلمات المرور غير متطابقة");
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError("يجب أن تكون كلمة المرور 6 أحرف على الأقل");
       return;
     }
 
@@ -41,7 +41,7 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       const data = await res.json();
-      setError(data.error || "Registration failed");
+      setError(data.error || "فشل التسجيل");
       setLoading(false);
       return;
     }
@@ -71,11 +71,11 @@ export default function RegisterPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
               H
             </div>
-            <span className="text-xl font-bold text-white">HotelAI</span>
+            <span className="text-xl font-bold text-white">فندق ذكي</span>
           </Link>
-          <h1 className="text-2xl font-bold text-white">Create your account</h1>
+          <h1 className="text-2xl font-bold text-white">أنشئ حسابك</h1>
           <p className="text-sm text-slate-400 mt-1">
-            Register to set up your hotel&apos;s AI assistant
+            سجّل لإعداد مساعد فندقك الذكي
           </p>
         </div>
 
@@ -88,7 +88,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              Email
+              البريد الإلكتروني
             </label>
             <input
               type="email"
@@ -102,28 +102,28 @@ export default function RegisterPage() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              Password
+              كلمة المرور
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="At least 6 characters"
+              placeholder="6 أحرف على الأقل"
               className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              Confirm Password
+              تأكيد كلمة المرور
             </label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              placeholder="Repeat your password"
+              placeholder="أعد كتابة كلمة المرور"
               className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
@@ -133,17 +133,17 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 disabled:text-slate-500 text-white text-sm font-semibold transition-colors"
           >
-            {loading ? "Creating account..." : "Create Account"}
+            {loading ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
           </button>
         </form>
 
         <p className="text-center text-sm text-slate-500">
-          Already have an account?{" "}
+          لديك حساب بالفعل؟{" "}
           <Link
             href="/login"
             className="text-indigo-400 hover:text-indigo-300 font-medium"
           >
-            Sign In
+            تسجيل الدخول
           </Link>
         </p>
       </div>

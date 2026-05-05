@@ -21,7 +21,7 @@ export default function OnboardingPage() {
     setSlug(sanitized);
 
     if (sanitized && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(sanitized)) {
-      setSlugError("Use only lowercase letters, numbers, and hyphens");
+      setSlugError("استخدم أحرف إنجليزية صغيرة وأرقام وشرطات فقط");
     } else {
       setSlugError(null);
     }
@@ -44,7 +44,7 @@ export default function OnboardingPage() {
     setError(null);
 
     if (!name.trim() || !slug.trim()) {
-      setError("Hotel name and slug are required");
+      setError("اسم الفندق والرابط مطلوبان");
       return;
     }
 
@@ -72,7 +72,7 @@ export default function OnboardingPage() {
       router.push("/admin");
       router.refresh();
     } catch {
-      setError("Network error. Please try again.");
+      setError("خطأ في الشبكة. يرجى المحاولة مرة أخرى.");
       setLoading(false);
     }
   }
@@ -85,11 +85,11 @@ export default function OnboardingPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
               H
             </div>
-            <span className="text-xl font-bold text-white">HotelAI</span>
+            <span className="text-xl font-bold text-white">فندق ذكي</span>
           </Link>
-          <h1 className="text-2xl font-bold text-white">Set up your hotel</h1>
+          <h1 className="text-2xl font-bold text-white">إعداد فندقك</h1>
           <p className="text-sm text-slate-400 mt-1">
-            Create your hotel profile to start using the AI assistant
+            أنشئ ملف فندقك لبدء استخدام المساعد الذكي
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default function OnboardingPage() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              Hotel Name <span className="text-red-400">*</span>
+              اسم الفندق <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
@@ -112,14 +112,14 @@ export default function OnboardingPage() {
                 if (!slug) autoGenerateSlug(e.target.value);
               }}
               required
-              placeholder="Grand Plaza Hotel"
+              placeholder="فندق القصر الكبير"
               className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              URL Slug <span className="text-red-400">*</span>
+              رابط URL <span className="text-red-400">*</span>
             </label>
             <div className="flex items-center gap-0">
               <span className="px-3 py-3 rounded-l-lg bg-slate-900 border border-r-0 border-slate-700 text-slate-500 text-sm">
@@ -139,19 +139,19 @@ export default function OnboardingPage() {
             )}
             {slug && !slugError && (
               <p className="text-xs text-slate-500 mt-1">
-                Guest chat URL: <span className="text-indigo-400">/chat/{slug}</span>
+                رابط المحادثة: <span className="text-indigo-400">/chat/{slug}</span>
               </p>
             )}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1.5">
-              Description <span className="text-slate-600">(optional)</span>
+              الوصف <span className="text-slate-600">(اختياري)</span>
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="A luxury 5-star hotel in the heart of the city..."
+              placeholder="فندق فاخر 5 نجوم في قلب المدينة..."
               rows={3}
               className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
             />
@@ -162,7 +162,7 @@ export default function OnboardingPage() {
             disabled={loading || !!slugError}
             className="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 disabled:text-slate-500 text-white text-sm font-semibold transition-colors"
           >
-            {loading ? "Creating hotel..." : "Create Hotel & Continue"}
+            {loading ? "جاري إنشاء الفندق..." : "إنشاء الفندق والمتابعة"}
           </button>
         </form>
       </div>

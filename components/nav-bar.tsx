@@ -32,14 +32,14 @@ export default function NavBar() {
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base">
             H
           </div>
-          <span className="text-lg font-bold text-white">HotelAI</span>
+          <span className="text-lg font-bold text-white">فندق ذكي</span>
         </Link>
         <div className="flex items-center gap-3">
           <Link
             href="/hotels"
             className="text-sm text-slate-400 hover:text-white transition-colors hidden sm:block"
           >
-            Browse Hotels
+            تصفح الفنادق
           </Link>
 
           {isLoggedIn ? (
@@ -49,14 +49,14 @@ export default function NavBar() {
                 className="text-sm px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
-                Dashboard
+                لوحة التحكم
               </Link>
               <button
                 onClick={handleSignOut}
                 className="text-sm px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700 transition-colors flex items-center gap-1.5"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                Logout
+                خروج
               </button>
             </>
           ) : (
@@ -65,13 +65,13 @@ export default function NavBar() {
                 href="/login"
                 className="text-sm text-slate-300 hover:text-white transition-colors"
               >
-                Sign In
+                تسجيل الدخول
               </Link>
               <Link
                 href="/register"
                 className="text-sm px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors"
               >
-                Register
+                تسجيل جديد
               </Link>
             </>
           )}

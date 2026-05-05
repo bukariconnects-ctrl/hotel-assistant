@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hotel AI Assistant",
-  description: "AI-powered guest assistant for hotels using RAG",
+  title: "مساعد الفندق الذكي",
+  description: "مساعد ضيوف الفندق المدعوم بالذكاء الاصطناعي",
 };
 
 export default function RootLayout({
@@ -12,11 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ar" dir="rtl">
       <body>{children}</body>
     </html>
   );
 }
-
-// =====
-// =====

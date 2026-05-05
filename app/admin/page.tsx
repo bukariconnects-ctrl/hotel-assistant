@@ -59,10 +59,10 @@ interface UploadStep {
 }
 
 const INITIAL_STEPS: UploadStep[] = [
-  { label: "Validating file & hotel", status: "pending" },
-  { label: "Extracting text from PDF", status: "pending" },
-  { label: "Chunking & generating embeddings", status: "pending" },
-  { label: "Saving to database", status: "pending" },
+  { label: "التحقق من الملف والفندق", status: "pending" },
+  { label: "استخراج النص من PDF", status: "pending" },
+  { label: "تقسيم وتوليد التضمينات", status: "pending" },
+  { label: "الحفظ في قاعدة البيانات", status: "pending" },
 ];
 
 export default function AdminPage() {
@@ -186,7 +186,7 @@ export default function AdminPage() {
 
   function handleFileChange(file: File | null) {
     if (file && file.type !== "application/pdf") {
-      alert("Only PDF files are supported.");
+      alert("يتم دعم ملفات PDF فقط.");
       return;
     }
     setSelectedFile(file);
@@ -332,21 +332,21 @@ export default function AdminPage() {
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              Dashboard
+              لوحة التحكم
             </Link>
             <Link
               href="/admin/chats"
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <MessageSquare className="w-3.5 h-3.5" />
-              Chats
+              المحادثات
             </Link>
             <Link
               href="/admin/settings"
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <Settings className="w-3.5 h-3.5" />
-              Settings
+              الإعدادات
             </Link>
             <Link
               href={`/chat/${hotel.slug}`}
@@ -354,14 +354,14 @@ export default function AdminPage() {
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <MessageSquare className="w-3.5 h-3.5" />
-              Open Chat
+              فتح المحادثة
             </Link>
             <button
               onClick={handleSignOut}
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Sign Out
+              خروج
             </button>
           </div>
         </div>
@@ -372,17 +372,17 @@ export default function AdminPage() {
         <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <StatCard
             icon={<Database className="w-5 h-5 text-indigo-400" />}
-            label="Total Documents"
+            label="إجمالي المستندات"
             value={stats?.totalDocuments}
           />
           <StatCard
             icon={<Layers className="w-5 h-5 text-emerald-400" />}
-            label="Total Sections"
+            label="إجمالي الأقسام"
             value={stats?.totalSections}
           />
           <StatCard
             icon={<MessagesSquare className="w-5 h-5 text-amber-400" />}
-            label="Chat Sessions"
+            label="جلسات المحادثة"
             value={stats?.totalChatSessions}
           />
         </section>
@@ -394,18 +394,18 @@ export default function AdminPage() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <MessagesSquare className="w-4 h-4 text-amber-400" />
-                <h3 className="text-sm font-semibold text-white">Recent Activity</h3>
+                <h3 className="text-sm font-semibold text-white">النشاط الأخير</h3>
               </div>
               <Link
                 href="/admin/chats"
                 className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
               >
-                View all →
+                عرض الكل ←
               </Link>
             </div>
             {recentSessions.length === 0 ? (
               <p className="text-xs text-slate-500 py-6 text-center">
-                No chat sessions yet.
+                لا توجد جلسات محادثة بعد.
               </p>
             ) : (
               <div className="space-y-2">
@@ -420,7 +420,7 @@ export default function AdminPage() {
                       </div>
                       <div className="min-w-0">
                         <p className="text-xs font-medium text-slate-200 truncate">
-                          {s.guest_name || "Guest"}
+                          {s.guest_name || "ضيف"}
                         </p>
                         <p className="text-[10px] text-slate-500">
                           {new Date(s.updated_at).toLocaleDateString("en-US", {
@@ -433,7 +433,7 @@ export default function AdminPage() {
                       </div>
                     </div>
                     <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-700 text-slate-400">
-                      {s.message_count} msgs
+                      {s.message_count} رسالة
                     </span>
                   </div>
                 ))}
@@ -445,7 +445,7 @@ export default function AdminPage() {
           <div className="rounded-xl border border-slate-800 bg-slate-900 p-5">
             <div className="flex items-center gap-2 mb-4">
               <Layers className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-sm font-semibold text-white">Guest Insights</h3>
+              <h3 className="text-sm font-semibold text-white">رؤى الضيوف</h3>
             </div>
             {!insights ? (
               <div className="flex items-center justify-center py-6">
@@ -471,7 +471,7 @@ export default function AdminPage() {
                   {insights.summary}
                 </p>
                 <p className="text-[10px] text-slate-600">
-                  Based on {insights.totalAnalyzed} recent guest messages
+                  بناءً على {insights.totalAnalyzed} رسالة حديثة من الضيوف
                 </p>
               </div>
             )}
@@ -482,10 +482,10 @@ export default function AdminPage() {
         <section className="rounded-xl border border-slate-800 bg-slate-900 p-6">
           <div className="flex items-center gap-2 mb-4">
             <Upload className="w-5 h-5 text-indigo-400" />
-            <h2 className="text-lg font-semibold text-white">Upload Document</h2>
+            <h2 className="text-lg font-semibold text-white">رفع مستند</h2>
           </div>
           <p className="text-sm text-slate-400 mb-6">
-            Upload a PDF to extract text, generate embeddings, and add to your hotel&apos;s knowledge base.
+            ارفع ملف PDF لاستخراج النص وتوليد التضمينات وإضافته إلى قاعدة معرفة فندقك.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -494,7 +494,7 @@ export default function AdminPage() {
               {/* Category */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  Category
+                  التصنيف
                 </label>
                 <select
                   value={category}
@@ -513,7 +513,7 @@ export default function AdminPage() {
               {/* File drop zone */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  PDF File
+                  ملف PDF
                 </label>
                 <div
                   onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
@@ -546,16 +546,16 @@ export default function AdminPage() {
                         {selectedFile.name}
                       </p>
                       <p className="text-xs text-slate-500">
-                        {(selectedFile.size / 1024).toFixed(1)} KB — click to change
+                        {(selectedFile.size / 1024).toFixed(1)} KB — انقر للتغيير
                       </p>
                     </div>
                   ) : (
                     <div className="space-y-1">
                       <Upload className="w-8 h-8 text-slate-500 mx-auto mb-2" />
                       <p className="text-sm text-slate-400">
-                        Drag & drop a PDF here
+                        اسحب وأفلت ملف PDF هنا
                       </p>
-                      <p className="text-xs text-slate-600">or click to browse</p>
+                      <p className="text-xs text-slate-600">أو انقر للتصفح</p>
                     </div>
                   )}
                 </div>
@@ -570,12 +570,12 @@ export default function AdminPage() {
                 {isUploading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Processing…
+                    جاري المعالجة...
                   </>
                 ) : (
                   <>
                     <Upload className="w-4 h-4" />
-                    Upload & Ingest
+                    رفع ومعالجة
                   </>
                 )}
               </button>
@@ -585,7 +585,7 @@ export default function AdminPage() {
             <div className="space-y-5">
               <div>
                 <p className="text-sm font-medium text-slate-300 mb-3">
-                  Pipeline Status
+                  حالة المعالجة
                 </p>
                 <div className="space-y-2">
                   {steps.map((step, i) => (
@@ -619,14 +619,14 @@ export default function AdminPage() {
                 >
                   {result.success ? (
                     <div className="space-y-1">
-                      <p className="font-semibold text-green-200">✓ Ingestion complete</p>
-                      <p>File: {result.fileName}</p>
-                      <p>Chunks embedded: {result.chunksProcessed}</p>
-                      <p>Characters processed: {result.totalCharacters?.toLocaleString()}</p>
+                      <p className="font-semibold text-green-200">✓ تمت المعالجة بنجاح</p>
+                      <p>الملف: {result.fileName}</p>
+                      <p>الأجزاء المضمنة: {result.chunksProcessed}</p>
+                      <p>الأحرف المعالجة: {result.totalCharacters?.toLocaleString()}</p>
                     </div>
                   ) : (
                     <div className="space-y-1">
-                      <p className="font-semibold text-red-200">✗ Error</p>
+                      <p className="font-semibold text-red-200">✗ خطأ</p>
                       <p>{result.error}</p>
                     </div>
                   )}
@@ -641,9 +641,9 @@ export default function AdminPage() {
           <div className="px-6 py-5 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FileText className="w-5 h-5 text-indigo-400" />
-              <h2 className="text-lg font-semibold text-white">Knowledge Base</h2>
+              <h2 className="text-lg font-semibold text-white">قاعدة المعرفة</h2>
               <span className="text-xs text-slate-500 ml-1">
-                {documents.length} document{documents.length !== 1 ? "s" : ""}
+                {documents.length} مستند
               </span>
             </div>
           </div>
@@ -665,9 +665,9 @@ export default function AdminPage() {
           ) : documents.length === 0 ? (
             <div className="p-12 text-center">
               <FileText className="w-12 h-12 text-slate-700 mx-auto mb-3" />
-              <p className="text-sm text-slate-400">No documents uploaded yet.</p>
+              <p className="text-sm text-slate-400">لم يتم رفع مستندات بعد.</p>
               <p className="text-xs text-slate-600 mt-1">
-                Upload a PDF above to build your hotel&apos;s AI knowledge base.
+                ارفع ملف PDF أعلاه لبناء قاعدة معرفة فندقك.
               </p>
             </div>
           ) : (
@@ -675,11 +675,11 @@ export default function AdminPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-xs text-slate-500 uppercase tracking-wider border-b border-slate-800">
-                    <th className="px-6 py-3 text-left font-medium">File</th>
-                    <th className="px-4 py-3 text-left font-medium">Category</th>
-                    <th className="px-4 py-3 text-left font-medium">Uploaded</th>
-                    <th className="px-4 py-3 text-left font-medium">Status</th>
-                    <th className="px-4 py-3 text-right font-medium">Actions</th>
+                    <th className="px-6 py-3 text-right font-medium">الملف</th>
+                    <th className="px-4 py-3 text-right font-medium">التصنيف</th>
+                    <th className="px-4 py-3 text-right font-medium">تاريخ الرفع</th>
+                    <th className="px-4 py-3 text-right font-medium">الحالة</th>
+                    <th className="px-4 py-3 text-left font-medium">الإجراءات</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800">
@@ -761,7 +761,7 @@ export default function AdminPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-sm mx-4 rounded-xl bg-slate-900 border border-slate-700 p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-semibold text-white">Delete Document</h3>
+              <h3 className="text-base font-semibold text-white">حذف المستند</h3>
               <button
                 onClick={() => setDeleteTarget(null)}
                 className="p-1 rounded-lg hover:bg-slate-800 text-slate-400"
@@ -770,8 +770,8 @@ export default function AdminPage() {
               </button>
             </div>
             <p className="text-sm text-slate-400 mb-2">
-              Are you sure you want to delete this document? This will permanently
-              remove all associated embeddings and cannot be undone.
+              هل أنت متأكد من حذف هذا المستند؟ سيتم حذف جميع
+              التضمينات المرتبطة نهائياً ولا يمكن التراجع.
             </p>
             <p className="text-sm font-medium text-slate-200 bg-slate-800 rounded-lg px-3 py-2 mb-5 truncate">
               {deleteTarget.file_name}
@@ -781,7 +781,7 @@ export default function AdminPage() {
                 onClick={() => setDeleteTarget(null)}
                 className="flex-1 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-medium border border-slate-700 transition-colors"
               >
-                Cancel
+                إلغاء
               </button>
               <button
                 onClick={handleDelete}
@@ -791,12 +791,12 @@ export default function AdminPage() {
                 {deleting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Deleting…
+                    جاري الحذف...
                   </>
                 ) : (
                   <>
                     <Trash2 className="w-4 h-4" />
-                    Delete
+                    حذف
                   </>
                 )}
               </button>
@@ -836,11 +836,11 @@ function StatCard({
 
 function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { bg: string; text: string; label: string }> = {
-    ready: { bg: "bg-green-950 border-green-800", text: "text-green-400", label: "Active" },
-    inactive: { bg: "bg-slate-800 border-slate-700", text: "text-slate-400", label: "Inactive" },
-    processing: { bg: "bg-amber-950 border-amber-800", text: "text-amber-400", label: "Processing" },
-    error: { bg: "bg-red-950 border-red-800", text: "text-red-400", label: "Error" },
-    pending: { bg: "bg-slate-800 border-slate-700", text: "text-slate-500", label: "Pending" },
+    ready: { bg: "bg-green-950 border-green-800", text: "text-green-400", label: "نشط" },
+    inactive: { bg: "bg-slate-800 border-slate-700", text: "text-slate-400", label: "غير نشط" },
+    processing: { bg: "bg-amber-950 border-amber-800", text: "text-amber-400", label: "قيد المعالجة" },
+    error: { bg: "bg-red-950 border-red-800", text: "text-red-400", label: "خطأ" },
+    pending: { bg: "bg-slate-800 border-slate-700", text: "text-slate-500", label: "معلق" },
   };
   const s = map[status] ?? map.pending;
   return (

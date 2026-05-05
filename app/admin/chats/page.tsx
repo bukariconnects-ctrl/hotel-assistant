@@ -147,7 +147,7 @@ export default function ChatHistoryPage() {
             </Link>
             <div>
               <h1 className="text-lg font-semibold text-white">{hotel.name}</h1>
-              <p className="text-xs text-slate-400">Chat History</p>
+              <p className="text-xs text-slate-400">سجل المحادثات</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -156,21 +156,21 @@ export default function ChatHistoryPage() {
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              Dashboard
+              لوحة التحكم
             </Link>
             <Link
               href="/admin/settings"
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <Settings className="w-3.5 h-3.5" />
-              Settings
+              الإعدادات
             </Link>
             <button
               onClick={handleSignOut}
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Sign Out
+              خروج
             </button>
           </div>
         </div>
@@ -182,10 +182,10 @@ export default function ChatHistoryPage() {
             <div className="flex items-center gap-2">
               <MessageSquare className="w-5 h-5 text-indigo-400" />
               <h2 className="text-lg font-semibold text-white">
-                Chat Sessions
+                جلسات المحادثة
               </h2>
               <span className="text-xs text-slate-500 ml-1">
-                {sessions.length} total
+                {sessions.length} إجمالي
               </span>
             </div>
             <div className="relative">
@@ -194,7 +194,7 @@ export default function ChatHistoryPage() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by guest name..."
+                placeholder="ابحث باسم الضيف..."
                 className="pl-9 pr-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-500 w-64"
               />
             </div>
@@ -205,8 +205,8 @@ export default function ChatHistoryPage() {
               <MessageSquare className="w-10 h-10 text-slate-700 mx-auto mb-3" />
               <p className="text-slate-500 text-sm">
                 {sessions.length === 0
-                  ? "No chat sessions yet. Guest conversations will appear here."
-                  : "No sessions match your search."}
+                  ? "لا توجد جلسات محادثة بعد. ستظهر محادثات الضيوف هنا."
+                  : "لا توجد جلسات تطابق بحثك."}
               </p>
             </div>
           ) : (
@@ -214,20 +214,20 @@ export default function ChatHistoryPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-800 text-left">
-                    <th className="pb-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                      Guest
+                    <th className="pb-3 text-xs font-medium text-slate-500 tracking-wider">
+                      الضيف
                     </th>
-                    <th className="pb-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                      Started
+                    <th className="pb-3 text-xs font-medium text-slate-500 tracking-wider">
+                      بدأت
                     </th>
-                    <th className="pb-3 text-xs font-medium text-slate-500 uppercase tracking-wider">
-                      Last Activity
+                    <th className="pb-3 text-xs font-medium text-slate-500 tracking-wider">
+                      آخر نشاط
                     </th>
-                    <th className="pb-3 text-xs font-medium text-slate-500 uppercase tracking-wider text-center">
-                      Messages
+                    <th className="pb-3 text-xs font-medium text-slate-500 tracking-wider text-center">
+                      الرسائل
                     </th>
-                    <th className="pb-3 text-xs font-medium text-slate-500 uppercase tracking-wider text-right">
-                      Actions
+                    <th className="pb-3 text-xs font-medium text-slate-500 tracking-wider text-left">
+                      الإجراءات
                     </th>
                   </tr>
                 </thead>
@@ -243,7 +243,7 @@ export default function ChatHistoryPage() {
                             <User className="w-3.5 h-3.5" />
                           </div>
                           <span className="text-slate-200 font-medium">
-                            {s.guest_name || "Guest"}
+                            {s.guest_name || "ضيف"}
                           </span>
                         </div>
                       </td>
@@ -274,7 +274,7 @@ export default function ChatHistoryPage() {
                           className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-lg bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-600/30 text-indigo-400 transition-colors"
                         >
                           <Eye className="w-3.5 h-3.5" />
-                          View
+                          عرض
                         </button>
                       </td>
                     </tr>
@@ -294,11 +294,11 @@ export default function ChatHistoryPage() {
             <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
               <div>
                 <h3 className="text-base font-semibold text-white">
-                  Conversation Transcript
+                  سجل المحادثة
                 </h3>
                 {transcriptMeta && (
                   <p className="text-xs text-slate-400 mt-0.5">
-                    {transcriptMeta.guest_name || "Guest"} ·{" "}
+                    {transcriptMeta.guest_name || "ضيف"} ·{" "}
                     {new Date(transcriptMeta.created_at).toLocaleDateString(
                       "en-US",
                       {
@@ -328,7 +328,7 @@ export default function ChatHistoryPage() {
                 </div>
               ) : transcript.length === 0 ? (
                 <p className="text-center py-16 text-slate-500 text-sm">
-                  No messages in this session.
+                  لا توجد رسائل في هذه الجلسة.
                 </p>
               ) : (
                 transcript.map((m) => (

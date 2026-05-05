@@ -24,12 +24,12 @@ export default function HotelGrid({ hotels }: { hotels: HotelCard[] }) {
     return (
       <div className="text-center py-20">
         <div className="text-5xl mb-4">🏨</div>
-        <p className="text-slate-400">No hotels registered yet.</p>
+        <p className="text-slate-400">لا توجد فنادق مسجلة بعد.</p>
         <Link
           href="/register"
           className="inline-block mt-4 text-sm text-indigo-400 hover:text-indigo-300"
         >
-          Be the first to register your hotel →
+          كن أول من يسجل فندقه ←
         </Link>
       </div>
     );
@@ -61,14 +61,14 @@ export default function HotelGrid({ hotels }: { hotels: HotelCard[] }) {
           </div>
 
           <p className="text-sm text-slate-400 leading-relaxed flex-1 mb-6 line-clamp-3">
-            {hotel.description || "An AI-powered hotel assistant ready to help you."}
+            {hotel.description || "مساعد فندقي ذكي جاهز لمساعدتك."}
           </p>
 
           <Link
             href={`/chat/${hotel.slug}`}
             className="text-center py-2.5 rounded-lg bg-indigo-600/10 hover:bg-indigo-600 border border-indigo-600/30 hover:border-indigo-600 text-indigo-400 hover:text-white text-sm font-medium transition-all"
           >
-            Chat with AI →
+            محادثة المساعد الذكي ←
           </Link>
         </motion.div>
       ))}

@@ -55,15 +55,15 @@ export default function GuestChatPage() {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-slate-950 text-slate-100 px-4">
         <div className="text-5xl mb-4">🏨</div>
-        <h1 className="text-xl font-semibold mb-2">Hotel Not Found</h1>
+        <h1 className="text-xl font-semibold mb-2">الفندق غير موجود</h1>
         <p className="text-sm text-slate-400 mb-6 text-center max-w-xs">
-          We couldn&apos;t find a hotel with the slug &quot;{slug}&quot;.
+          لم نتمكن من العثور على فندق بالرابط &quot;{slug}&quot;.
         </p>
         <Link
           href="/hotels"
           className="text-sm px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
         >
-          Browse Hotels
+          تصفح الفنادق
         </Link>
       </div>
     );
@@ -73,9 +73,9 @@ export default function GuestChatPage() {
   const isEmpty = messages.length === 0;
 
   return (
-    <div className="flex flex-col h-screen bg-slate-950 text-slate-100">
+    <div className="flex flex-col h-screen bg-slate-950 text-slate-100" dir="ltr">
       {/* Header */}
-      <header className="flex-shrink-0 bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center gap-3 shadow-lg">
+      <header className="flex-shrink-0 bg-slate-900 border-b border-slate-800 px-4 py-3 flex items-center gap-3 shadow-lg" dir="rtl">
         <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
           AI
         </div>
@@ -85,14 +85,14 @@ export default function GuestChatPage() {
           </p>
           <p className="text-xs text-emerald-400 flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-            Online
+            متصل
           </p>
         </div>
         <Link
           href="/hotels"
           className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700 transition-colors"
         >
-          Directory
+          الدليل
         </Link>
       </header>
 
@@ -112,14 +112,14 @@ export default function GuestChatPage() {
                   : "Welcome"}
               </p>
               <p className="text-sm text-slate-400 max-w-xs">
-                I&apos;m your AI assistant. Ask me anything about the hotel — services, amenities, policies, and more.
+                أنا مساعدك الذكي. اسألني أي شيء عن الفندق — الخدمات، المرافق، السياسات، والمزيد.
               </p>
             </div>
             <div className="flex flex-wrap gap-2 justify-center mt-2">
               {[
-                "What amenities are available?",
-                "What are the check-in times?",
-                "Do you have a restaurant?",
+                "ما المرافق المتاحة؟",
+                "ما مواعيد تسجيل الدخول؟",
+                "هل يوجد مطعم؟",
               ].map((suggestion) => (
                 <button
                   key={suggestion}
@@ -162,8 +162,8 @@ export default function GuestChatPage() {
                 : "bg-red-950 border border-red-800 text-red-300"
             }`}>
               {isQuota
-                ? "⏳ تجاوزت حد الطلبات المجانية، يرجى المحاولة بعد قليل."
-                : "Something went wrong. Please try again."}
+                ? "⌛ تجاوزت حد الطلبات المجانية، يرجى المحاولة بعد قليل."
+                : "حدث خطأ. يرجى المحاولة مرة أخرى."}
             </div>
           );
         })()}
@@ -172,7 +172,7 @@ export default function GuestChatPage() {
       </div>
 
       {/* Input bar */}
-      <div className="flex-shrink-0 bg-slate-900 border-t border-slate-800 px-4 py-3">
+      <div className="flex-shrink-0 bg-slate-900 border-t border-slate-800 px-4 py-3" dir="rtl">
         <form
           onSubmit={handleSubmit}
           className="flex items-end gap-2 max-w-3xl mx-auto"
@@ -181,7 +181,7 @@ export default function GuestChatPage() {
             ref={inputRef}
             value={input}
             onChange={handleInputChange}
-            placeholder="Ask about the hotel…"
+            placeholder="اسأل عن الفندق..."
             disabled={isLoading}
             autoComplete="off"
             className="flex-1 resize-none rounded-2xl bg-slate-800 border border-slate-700 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:opacity-50 transition-colors"
@@ -196,7 +196,7 @@ export default function GuestChatPage() {
           </button>
         </form>
         <p className="text-center text-xs text-slate-600 mt-2">
-          Powered by Gemini · Answers based on hotel documents
+          مدعوم بـ Gemini · إجابات مبنية على مستندات الفندق
         </p>
       </div>
     </div>
@@ -236,10 +236,11 @@ function MessageBubble({
         </div>
       )}
       <div
-        className={`max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap break-words transition-all animate-fade-in ${
+        dir="rtl"
+        className={`max-w-[78%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap break-words transition-all animate-fade-in text-right ${
           isUser
-            ? "bg-indigo-600 text-white rounded-br-sm"
-            : "bg-slate-800 text-slate-100 rounded-bl-sm"
+            ? "bg-indigo-600 text-white rounded-bl-sm"
+            : "bg-slate-800 text-slate-100 rounded-br-sm"
         }`}
       >
         {body}

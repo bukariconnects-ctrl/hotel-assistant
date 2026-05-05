@@ -95,13 +95,13 @@ export default function AdminSettingsPage() {
       if (res.ok) {
         const updated = await res.json();
         setHotel({ ...hotel, ...updated });
-        setToast({ type: "success", message: "Settings saved successfully." });
+        setToast({ type: "success", message: "تم حفظ الإعدادات بنجاح." });
       } else {
         const err = await res.json();
-        setToast({ type: "error", message: err.error || "Failed to save." });
+        setToast({ type: "error", message: err.error || "فشل في الحفظ." });
       }
     } catch {
-      setToast({ type: "error", message: "Network error." });
+      setToast({ type: "error", message: "خطأ في الشبكة." });
     } finally {
       setSaving(false);
       setTimeout(() => setToast(null), 4000);
@@ -137,7 +137,7 @@ export default function AdminSettingsPage() {
             </Link>
             <div>
               <h1 className="text-lg font-semibold text-white">{hotel.name}</h1>
-              <p className="text-xs text-slate-400">/chat/{hotel.slug} · Settings</p>
+              <p className="text-xs text-slate-400">/chat/{hotel.slug} · الإعدادات</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -146,7 +146,7 @@ export default function AdminSettingsPage() {
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              Dashboard
+              لوحة التحكم
             </Link>
             <Link
               href={`/chat/${hotel.slug}`}
@@ -154,14 +154,14 @@ export default function AdminSettingsPage() {
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <MessageSquare className="w-3.5 h-3.5" />
-              Open Chat
+              فتح المحادثة
             </Link>
             <button
               onClick={handleSignOut}
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
               <LogOut className="w-3.5 h-3.5" />
-              Sign Out
+              خروج
             </button>
           </div>
         </div>
@@ -171,20 +171,20 @@ export default function AdminSettingsPage() {
         <section className="rounded-xl border border-slate-800 bg-slate-900 p-6">
           <div className="flex items-center gap-2 mb-6">
             <Settings className="w-5 h-5 text-indigo-400" />
-            <h2 className="text-lg font-semibold text-white">Hotel Settings</h2>
+            <h2 className="text-lg font-semibold text-white">إعدادات الفندق</h2>
           </div>
 
           <div className="space-y-5">
             {/* Hotel Name */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Hotel Name
+                اسم الفندق
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Grand Palace Hotel"
+                placeholder="مثل: فندق القصر الكبير"
                 className="w-full px-3 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-500"
               />
             </div>
@@ -192,12 +192,12 @@ export default function AdminSettingsPage() {
             {/* Description */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Description
+                الوصف
               </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Brief description of your hotel..."
+                placeholder="وصف مختصر لفندقك..."
                 rows={3}
                 className="w-full px-3 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-500 resize-none"
               />
@@ -206,24 +206,24 @@ export default function AdminSettingsPage() {
             {/* Welcome Message */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                AI Welcome Message
+                رسالة الترحيب
               </label>
               <textarea
                 value={welcomeMessage}
                 onChange={(e) => setWelcomeMessage(e.target.value)}
-                placeholder="e.g. Welcome to Grand Palace Hotel! How can I assist you today?"
+                placeholder="مثل: مرحباً بك في فندق القصر! كيف يمكنني مساعدتك؟"
                 rows={3}
                 className="w-full px-3 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-500 resize-none"
               />
               <p className="mt-1.5 text-xs text-slate-500">
-                This message will be shown to guests when they first open the chat. Leave blank for the default greeting.
+                ستظهر هذه الرسالة للضيوف عند فتح المحادثة لأول مرة. اتركها فارغة للترحيب الافتراضي.
               </p>
             </div>
 
             {/* Contact Phone */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Contact Phone
+                هاتف التواصل
               </label>
               <input
                 type="tel"
@@ -237,13 +237,13 @@ export default function AdminSettingsPage() {
             {/* Website */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Website
+                الموقع الإلكتروني
               </label>
               <input
                 type="url"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
-                placeholder="e.g. https://www.myhotel.com"
+                placeholder="مثل: https://www.myhotel.com"
                 className="w-full px-3 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-500"
               />
             </div>
@@ -251,13 +251,13 @@ export default function AdminSettingsPage() {
             {/* Location */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Location
+                الموقع
               </label>
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="e.g. Riyadh, Saudi Arabia"
+                placeholder="مثل: الرياض، المملكة العربية السعودية"
                 className="w-full px-3 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-slate-500"
               />
             </div>
@@ -265,7 +265,7 @@ export default function AdminSettingsPage() {
             {/* Slug (read-only) */}
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                Slug
+                الرابط
               </label>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-slate-500">/chat/</span>
@@ -277,7 +277,7 @@ export default function AdminSettingsPage() {
                 />
               </div>
               <p className="mt-1.5 text-xs text-slate-500">
-                Slug cannot be changed after creation.
+                لا يمكن تغيير الرابط بعد الإنشاء.
               </p>
             </div>
 
@@ -290,12 +290,12 @@ export default function AdminSettingsPage() {
               {saving ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Saving…
+                  جاري الحفظ...
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4" />
-                  Save Settings
+                  حفظ الإعدادات
                 </>
               )}
             </button>
