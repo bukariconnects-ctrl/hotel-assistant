@@ -112,7 +112,7 @@ export default function Home() {
             variants={fadeUp}
             custom={1}
           >
-            مساعد فندقك{" "}
+             مساعد مؤسستك الذكي أتمتة خدمة العملاء ببياناتك الخاصة{" "}
             <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
               الذكي
             </span>
