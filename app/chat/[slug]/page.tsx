@@ -5,11 +5,12 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
-interface HotelData {
+interface OrgData {
   id: string;
   name: string;
   slug: string;
   description: string | null;
+  category: string;
   welcome_message: string | null;
 }
 
@@ -18,7 +19,7 @@ export default function GuestChatPage() {
   const slug = params.slug as string;
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hotel, setHotel] = useState<HotelData | null>(null);
+  const [org, setOrg] = useState<OrgData | null>(null);
   const [notFound, setNotFound] = useState(false);
   const sessionIdRef = useRef<string | null>(null);
 
@@ -42,7 +43,7 @@ export default function GuestChatPage() {
         return r.json();
       })
       .then((d) => {
-        if (d?.id) setHotel(d);
+        if (d?.id) setOrg(d);
       })
       .catch(() => setNotFound(true));
   }, [slug]);
@@ -54,22 +55,22 @@ export default function GuestChatPage() {
   if (notFound) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-slate-950 text-slate-100 px-4">
-        <div className="text-5xl mb-4">🏨</div>
-        <h1 className="text-xl font-semibold mb-2">الفندق غير موجود</h1>
+        <div className="text-5xl mb-4">�</div>
+        <h1 className="text-xl font-semibold mb-2">المؤسسة غير موجودة</h1>
         <p className="text-sm text-slate-400 mb-6 text-center max-w-xs">
-          لم نتمكن من العثور على فندق بالرابط &quot;{slug}&quot;.
+          لم نتمكن من العثور على مؤسسة بالرابط &quot;{slug}&quot;.
         </p>
         <Link
-          href="/hotels"
+          href="/directory"
           className="text-sm px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
         >
-          تصفح الفنادق
+          تصفح الدليل
         </Link>
       </div>
     );
   }
 
-  const hotelName = hotel?.name || "";
+  const orgName = org?.name || "";
   const isEmpty = messages.length === 0;
 
   return (
@@ -81,7 +82,7 @@ export default function GuestChatPage() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold text-white truncate">
-            {hotelName || "Hotel Assistant"}
+            {orgName || "AI Assistant"}
           </p>
           <p className="text-xs text-emerald-400 flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
@@ -89,7 +90,7 @@ export default function GuestChatPage() {
           </p>
         </div>
         <Link
-          href="/hotels"
+          href="/directory"
           className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700 transition-colors"
         >
           الدليل
@@ -101,25 +102,25 @@ export default function GuestChatPage() {
         {isEmpty && (
           <div className="flex flex-col items-center justify-center h-full text-center space-y-4 pb-16">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl">
-              🏨
+              �
             </div>
             <div className="space-y-1">
               <p className="text-lg font-semibold text-white">
-                {hotel?.welcome_message
-                  ? hotel.welcome_message
-                  : hotelName
-                  ? `مرحباً بك في ${hotelName}`
+                {org?.welcome_message
+                  ? org.welcome_message
+                  : orgName
+                  ? `مرحباً بك في ${orgName}`
                   : "Welcome"}
               </p>
               <p className="text-sm text-slate-400 max-w-xs">
-                أنا مساعدك الذكي. اسألني أي شيء عن الفندق — الخدمات، المرافق، السياسات، والمزيد.
+                أنا مساعدك الذكي. اسألني أي شيء عن المؤسسة — الخدمات، المعلومات، السياسات، والمزيد.
               </p>
             </div>
             <div className="flex flex-wrap gap-2 justify-center mt-2">
               {[
-                "ما المرافق المتاحة؟",
-                "ما مواعيد تسجيل الدخول؟",
-                "هل يوجد مطعم؟",
+                "ما الخدمات المتاحة؟",
+                "كيف يمكنني التواصل؟",
+                "ما ساعات العمل؟",
               ].map((suggestion) => (
                 <button
                   key={suggestion}

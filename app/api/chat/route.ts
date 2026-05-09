@@ -26,22 +26,22 @@ interface ChatMessage {
 
 type GeminiHistory = Array<{ role: string; parts: Array<{ text: string }> }>;
 
-function buildSystemPrompt(hotelName: string, context: string, sourceFiles: string[]): string {
+function buildSystemPrompt(orgName: string, category: string, context: string, sourceFiles: string[]): string {
   const sourcesInstruction = sourceFiles.length > 0
     ? `\n6. At the very end of your response, on a new line, append the sources you used in exactly this format:\n[Sources: ${sourceFiles.join(", ")}]\n   Only include source files that were actually relevant to your answer. If you didn't use any source, do NOT add a Sources line.`
     : "";
 
-  return `You are a helpful and friendly AI Guest Assistant for "${hotelName}".
-Your role is to help hotel guests with their questions and inquiries.
+  return `You are a helpful and friendly AI assistant for "${orgName}", which is a ${category}.
+Your role is to help visitors and users with their questions and inquiries about this organization.
 
 STRICT RULES:
 1. Answer questions ONLY based on the provided context below.
 2. Be warm, professional, and concise in your responses.
-3. If the answer is not in the context, say exactly: "I'm sorry, I don't have that information available. Please contact our front desk team — they'll be happy to assist you."
+3. If the answer is not in the context, say exactly: "I'm sorry, I don't have that information available. Please contact the team directly — they'll be happy to assist you."
 4. Never invent information, prices, or policies not explicitly stated in the context.
-5. Respond in the same language the guest used.${sourcesInstruction}
+5. Respond in the same language the user used.${sourcesInstruction}
 
---- HOTEL KNOWLEDGE BASE ---
+--- KNOWLEDGE BASE ---
 ${context || "No specific context available for this query."}
 --- END OF KNOWLEDGE BASE ---`;
 }
@@ -90,37 +90,37 @@ export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as {
       messages: ChatMessage[];
-      hotelId?: string;
+      orgId?: string;
       slug?: string;
       sessionId?: string;
     };
     const { messages, slug, sessionId: existingSessionId } = body;
-    let { hotelId } = body;
+    let { orgId } = body;
 
-    if (!messages?.length || (!hotelId && !slug)) {
+    if (!messages?.length || (!orgId && !slug)) {
       return new Response(
-        JSON.stringify({ error: "Missing required fields: messages and (hotelId or slug)" }),
+        JSON.stringify({ error: "Missing required fields: messages and (orgId or slug)" }),
         { status: 400 }
       );
     }
 
-    // Resolve slug to hotelId if needed
-    let hotelQuery = supabaseAdmin.from("hotels").select("id, name, welcome_message");
+    // Resolve slug to orgId if needed
+    let orgQuery = supabaseAdmin.from("organizations").select("id, name, category, welcome_message");
     if (slug) {
-      hotelQuery = hotelQuery.eq("slug", slug);
+      orgQuery = orgQuery.eq("slug", slug);
     } else {
-      hotelQuery = hotelQuery.eq("id", hotelId!);
+      orgQuery = orgQuery.eq("id", orgId!);
     }
-    const { data: hotel, error: hotelError } = await hotelQuery.single();
+    const { data: org, error: orgError } = await orgQuery.single();
 
-    if (hotelError || !hotel) {
+    if (orgError || !org) {
       return new Response(
-        JSON.stringify({ error: `Hotel not found: ${slug || hotelId}` }),
+        JSON.stringify({ error: `Organization not found: ${slug || orgId}` }),
         { status: 404 }
       );
     }
 
-    const resolvedHotelId = hotel.id;
+    const resolvedOrgId = org.id;
 
     const lastUserMessage = [...messages].reverse().find((m) => m.role === "user");
     if (!lastUserMessage) {
@@ -132,13 +132,13 @@ export async function POST(request: NextRequest) {
 
     const contextChunks = await getRelevantContext(
       lastUserMessage.content,
-      resolvedHotelId,
+      resolvedOrgId,
       5,
       0.25
     );
     const contextBlock = buildContextBlock(contextChunks);
     const sourceFiles = getUniqueSourceFiles(contextChunks);
-    const systemPrompt = buildSystemPrompt(hotel.name, contextBlock, sourceFiles);
+    const systemPrompt = buildSystemPrompt(org.name, org.category || "organization", contextBlock, sourceFiles);
 
     const geminiHistory: GeminiHistory = messages.slice(0, -1).map((m) => ({
       role: m.role === "user" ? "user" : "model",
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
         .from("chat_sessions")
         .insert({
           id: crypto.randomUUID(),
-          hotel_id: resolvedHotelId,
+          org_id: resolvedOrgId,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })

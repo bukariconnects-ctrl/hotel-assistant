@@ -19,7 +19,7 @@ import {
 
 const supabase = getSupabaseBrowserClient();
 
-interface HotelInfo {
+interface OrgInfo {
   id: string;
   name: string;
   slug: string;
@@ -43,7 +43,7 @@ interface TranscriptMessage {
 
 export default function ChatHistoryPage() {
   const router = useRouter();
-  const [hotel, setHotel] = useState<HotelInfo | null>(null);
+  const [org, setOrg] = useState<OrgInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [sessions, setSessions] = useState<SessionRow[]>([]);
   const [search, setSearch] = useState("");
@@ -57,9 +57,9 @@ export default function ChatHistoryPage() {
     created_at: string;
   } | null>(null);
 
-  const fetchSessions = useCallback(async (hotelId: string) => {
+  const fetchSessions = useCallback(async (orgId: string) => {
     try {
-      const res = await fetch(`/api/admin/chats?hotelId=${hotelId}`);
+      const res = await fetch(`/api/admin/chats?orgId=${orgId}`);
       if (res.ok) setSessions(await res.json());
     } catch {
       // ignore
@@ -69,15 +69,15 @@ export default function ChatHistoryPage() {
   useEffect(() => {
     async function init() {
       try {
-        const res = await fetch("/api/admin/hotels");
+        const res = await fetch("/api/admin/organizations");
         if (res.status === 401) {
           router.push("/login?redirect=/admin/chats");
           return;
         }
-        const hotels = await res.json();
-        if (Array.isArray(hotels) && hotels.length > 0) {
-          setHotel(hotels[0]);
-          await fetchSessions(hotels[0].id);
+        const orgs = await res.json();
+        if (Array.isArray(orgs) && orgs.length > 0) {
+          setOrg(orgs[0]);
+          await fetchSessions(orgs[0].id);
         } else {
           router.push("/admin/onboarding");
         }
@@ -132,7 +132,7 @@ export default function ChatHistoryPage() {
     );
   }
 
-  if (!hotel) return null;
+  if (!org) return null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -146,7 +146,7 @@ export default function ChatHistoryPage() {
               </div>
             </Link>
             <div>
-              <h1 className="text-lg font-semibold text-white">{hotel.name}</h1>
+              <h1 className="text-lg font-semibold text-white">{org.name}</h1>
               <p className="text-xs text-slate-400">سجل المحادثات</p>
             </div>
           </div>

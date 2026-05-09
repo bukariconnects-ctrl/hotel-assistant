@@ -32,14 +32,14 @@ export default function NavBar() {
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base">
             H
           </div>
-          <span className="text-lg font-bold text-white">فندق ذكي</span>
+          <span className="text-lg font-bold text-white">مؤسسة ذكية</span>
         </Link>
         <div className="flex items-center gap-3">
           <Link
-            href="/hotels"
+            href="/directory"
             className="text-sm text-slate-400 hover:text-white transition-colors hidden sm:block"
           >
-            تصفح الفنادق
+            دليل المؤسسات
           </Link>
 
           {isLoggedIn ? (

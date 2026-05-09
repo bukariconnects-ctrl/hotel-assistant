@@ -21,12 +21,12 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const hotelId = formData.get("hotelId") as string | null;
+    const orgId = formData.get("orgId") as string | null;
     const category = (formData.get("category") as string | null) || "General";
 
-    if (!file || !hotelId) {
+    if (!file || !orgId) {
       return NextResponse.json(
-        { error: "Missing required fields: file and hotelId" },
+        { error: "Missing required fields: file and orgId" },
         { status: 400 }
       );
     }
@@ -38,15 +38,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data: hotel, error: hotelError } = await supabaseAdmin
-      .from("hotels")
+    const { data: org, error: orgError } = await supabaseAdmin
+      .from("organizations")
       .select("id, name")
-      .eq("id", hotelId)
+      .eq("id", orgId)
       .single();
 
-    if (hotelError || !hotel) {
+    if (orgError || !org) {
       return NextResponse.json(
-        { error: `Hotel not found: ${hotelId}` },
+        { error: `Organization not found: ${orgId}` },
         { status: 404 }
       );
     }
@@ -56,11 +56,11 @@ export async function POST(request: NextRequest) {
       .from("documents")
       .insert({
         id: crypto.randomUUID(),
-        hotel_id: hotelId,
+        org_id: orgId,
         file_name: file.name,
         file_type: file.type,
         file_size: file.size,
-        storage_path: `hotels/${hotelId}/documents/${Date.now()}_${file.name}`,
+        storage_path: `orgs/${orgId}/documents/${Date.now()}_${file.name}`,
         status: "processing",
         category,
         created_at: now,
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
         startChar: chunk.startChar,
         endChar: chunk.endChar,
         fileName: file.name,
-        hotelId,
+        orgId,
       },
       embedding: embeddings[i],
     }));

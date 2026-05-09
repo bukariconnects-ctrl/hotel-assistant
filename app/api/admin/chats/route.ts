@@ -32,28 +32,28 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hotelId = request.nextUrl.searchParams.get("hotelId");
-    if (!hotelId) {
-      return NextResponse.json({ error: "hotelId is required" }, { status: 400 });
+    const orgId = request.nextUrl.searchParams.get("orgId");
+    if (!orgId) {
+      return NextResponse.json({ error: "orgId is required" }, { status: 400 });
     }
 
     // Verify ownership
-    const { data: hotel } = await supabaseAdmin
-      .from("hotels")
+    const { data: org } = await supabaseAdmin
+      .from("organizations")
       .select("id")
-      .eq("id", hotelId)
+      .eq("id", orgId)
       .eq("owner_id", user.id)
       .single();
 
-    if (!hotel) {
-      return NextResponse.json({ error: "Hotel not found" }, { status: 404 });
+    if (!org) {
+      return NextResponse.json({ error: "Organization not found" }, { status: 404 });
     }
 
     // Fetch sessions with message count
     const { data: sessions, error } = await supabaseAdmin
       .from("chat_sessions")
       .select("id, guest_name, created_at, updated_at, chat_messages(count)")
-      .eq("hotel_id", hotelId)
+      .eq("org_id", orgId)
       .order("updated_at", { ascending: false })
       .limit(100);
 

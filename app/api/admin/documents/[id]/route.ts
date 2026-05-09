@@ -24,20 +24,20 @@ function getAuthClient() {
 async function verifyOwnership(userId: string, documentId: string) {
   const { data: doc } = await supabaseAdmin
     .from("documents")
-    .select("id, hotel_id")
+    .select("id, org_id")
     .eq("id", documentId)
     .single();
 
   if (!doc) return null;
 
-  const { data: hotel } = await supabaseAdmin
-    .from("hotels")
+  const { data: org } = await supabaseAdmin
+    .from("organizations")
     .select("id")
-    .eq("id", doc.hotel_id)
+    .eq("id", doc.org_id)
     .eq("owner_id", userId)
     .single();
 
-  return hotel ? doc : null;
+  return org ? doc : null;
 }
 
 // DELETE — remove document and all linked sections (CASCADE handles sections)

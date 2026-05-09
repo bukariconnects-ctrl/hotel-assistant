@@ -7,15 +7,15 @@ export async function GET(
   _request: NextRequest,
   { params }: { params: { hotelId: string } }
 ) {
-  const { data: hotel, error } = await supabaseAdmin
-    .from("hotels")
-    .select("id, name, slug, description")
+  const { data: org, error } = await supabaseAdmin
+    .from("organizations")
+    .select("id, name, slug, description, category")
     .eq("id", params.hotelId)
     .single();
 
-  if (error || !hotel) {
-    return NextResponse.json({ error: "Hotel not found" }, { status: 404 });
+  if (error || !org) {
+    return NextResponse.json({ error: "Organization not found" }, { status: 404 });
   }
 
-  return NextResponse.json(hotel);
+  return NextResponse.json(org);
 }

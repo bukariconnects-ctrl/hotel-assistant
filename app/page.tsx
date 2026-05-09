@@ -146,10 +146,10 @@ export default function Home() {
               سجّل فندقك
             </Link>
             <Link
-              href="/hotels"
+              href="/directory"
               className="px-8 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-base border border-slate-700 transition-colors"
             >
-              تصفح الفنادق
+              تصفح المؤسسات
             </Link>
           </motion.div>
         </div>

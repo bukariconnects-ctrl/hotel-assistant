@@ -35,10 +35,10 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get session and verify ownership through hotel
+    // Get session and verify ownership through organization
     const { data: session } = await supabaseAdmin
       .from("chat_sessions")
-      .select("id, hotel_id, guest_name, created_at")
+      .select("id, org_id, guest_name, created_at")
       .eq("id", params.id)
       .single();
 
@@ -46,14 +46,14 @@ export async function GET(
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
-    const { data: hotel } = await supabaseAdmin
-      .from("hotels")
+    const { data: org } = await supabaseAdmin
+      .from("organizations")
       .select("id")
-      .eq("id", session.hotel_id)
+      .eq("id", session.org_id)
       .eq("owner_id", user.id)
       .single();
 
-    if (!hotel) {
+    if (!org) {
       return NextResponse.json({ error: "Not authorized" }, { status: 403 });
     }
 

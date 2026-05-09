@@ -11,7 +11,7 @@ export interface RetrievedChunk {
 
 export async function getRelevantContext(
   query: string,
-  hotelId: string,
+  orgId: string,
   topK: number = 5,
   similarityThreshold: number = 0.3
 ): Promise<RetrievedChunk[]> {
@@ -21,7 +21,7 @@ export async function getRelevantContext(
     query_embedding: queryEmbedding,
     match_threshold: similarityThreshold,
     match_count: topK,
-    p_hotel_id: hotelId,
+    p_org_id: orgId,
   });
 
   if (error) {

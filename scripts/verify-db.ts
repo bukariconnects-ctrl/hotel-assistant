@@ -8,24 +8,25 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Testing database connection...");
 
-  const hotelCount = await prisma.hotel.count();
-  console.log(`✅ Connected! Hotels table exists. Row count: ${hotelCount}`);
+  const orgCount = await prisma.organization.count();
+  console.log(`✅ Connected! Organizations table exists. Row count: ${orgCount}`);
 
-  const testHotel = await prisma.hotel.create({
+  const testOrg = await prisma.organization.create({
     data: {
-      name: "Test Grand Hotel",
-      slug: "test-grand-hotel",
+      name: "Test Organization",
+      slug: "test-org-verify",
       description: "Verification test record",
+      category: "general",
     },
   });
-  console.log(`✅ Insert OK — created hotel: ${testHotel.id}`);
+  console.log(`✅ Insert OK — created org: ${testOrg.id}`);
 
-  const fetched = await prisma.hotel.findUnique({
-    where: { id: testHotel.id },
+  const fetched = await prisma.organization.findUnique({
+    where: { id: testOrg.id },
   });
   console.log(`✅ Fetch OK — name: ${fetched?.name}`);
 
-  await prisma.hotel.delete({ where: { id: testHotel.id } });
+  await prisma.organization.delete({ where: { id: testOrg.id } });
   console.log(`✅ Cleanup OK — test record deleted`);
 
   console.log("\n🎉 All checks passed. Database is ready!");

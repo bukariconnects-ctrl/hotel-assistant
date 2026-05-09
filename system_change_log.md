@@ -1,8 +1,8 @@
-# System Change Log — Hotel AI Assistant (RAG System)
+# System Change Log — Organization AI Assistant (RAG System)
 
 > **Rule:** This file must be updated after every change made to the project.  
 > **Project Path:** `d:\RAG_SYSTEM`  
-> **Last Updated:** 2026-05-05 (v1.4.0)
+> **Last Updated:** 2026-05-09 (v2.0.0)
 
 ---
 
@@ -1042,6 +1042,72 @@ Full Arabic localization of the entire application. Set HTML direction to RTL, t
 - Global `dir="rtl"` on `<html>` handles most layout mirroring automatically via Tailwind/CSS
 - Chat page uses `dir="ltr"` on the main container to preserve standard chat message ordering (user messages on right, AI on left), with `dir="rtl"` on individual text elements for Arabic rendering
 - Table header alignment adjusted: `text-left` → `text-right` for RTL tables, actions column uses `text-left`
+
+---
+
+### [v2.0.0] — 2026-05-09 — Major Refactor: Hotel AI → Organization AI SaaS Platform
+
+**Status:** ✅ Complete
+
+#### Overview
+Complete refactor transforming the system from a single-purpose "Hotel AI" into a generic multi-sector "Organization AI" SaaS platform. Supports Hotels, Universities, Hospitals, Restaurants, Schools, Clinics, Government entities, and Companies.
+
+#### Database Changes
+- **Prisma schema:** `Hotel` model → `Organization` model with new `category` field (default: `"general"`)
+- **Table rename:** `hotels` → `organizations`
+- **Column rename:** `hotel_id` → `org_id` in `documents` and `chat_sessions` tables
+- **SQL migration:** `20260509130000_rename_hotels_to_organizations.sql`
+  - Renames table, adds category column, backfills existing rows as `hotel` category
+  - Drops and recreates `match_documents` function with `p_org_id` parameter
+- Prisma Client regenerated
+
+#### New Files
+- `lib/org-service.ts` — Replaces `lib/hotel-service.ts` with `getOrgBySlug()`, `getOrgById()`, `getOrgsByOwner()`, includes `category` in all queries
+- `app/api/admin/organizations/route.ts` — New admin CRUD API (POST/PATCH/GET) with `category` support
+- `app/directory/page.tsx` — New public directory page with category cards, filtering, and `framer-motion` transitions
+
+#### API Route Updates (all `hotel` → `org` references)
+- `app/api/chat/route.ts` — Dynamic persona system prompt: `"You are an AI assistant for {org_name}, which is a {category}"`; queries `organizations` table; `hotelId` → `orgId`; `hotel_id` → `org_id` in session insert
+- `app/api/admin/stats/route.ts` — `hotelId` param → `orgId`; queries `organizations` table
+- `app/api/admin/stats/insights/route.ts` — Same refactor; prompt generalized from "hotel" to "organization"
+- `app/api/admin/chats/route.ts` — `hotelId` → `orgId`; queries `organizations` table
+- `app/api/admin/chats/[id]/route.ts` — Ownership verified via `organizations` table, `hotel_id` → `org_id`
+- `app/api/admin/documents/route.ts` — `hotelId` → `orgId`; queries `organizations`
+- `app/api/admin/documents/[id]/route.ts` — `verifyOwnership` uses `org_id` + `organizations` table
+- `app/api/admin/documents/upload/route.ts` — `hotelId` → `orgId` in form data, DB insert, and metadata
+- `app/api/hotels/route.ts` — Queries `organizations` table, includes `category` in select
+- `app/api/hotel/by-slug/[slug]/route.ts` — Uses `getOrgBySlug` from `lib/org-service`
+- `app/api/hotel/[hotelId]/route.ts` — Queries `organizations` table
+- `lib/ai/retrieval-service.ts` — `hotelId` param → `orgId`; RPC param `p_hotel_id` → `p_org_id`
+
+#### Frontend Updates
+- **`app/admin/page.tsx`** — `HotelInfo` → `OrgInfo` interface; `hotel` state → `org`; all API URLs updated (`hotelId` → `orgId`, `hotels` → `organizations`); form data key `hotelId` → `orgId`
+- **`app/admin/settings/page.tsx`** — Same refactor; `HotelInfo` → `OrgInfo`; API → `/api/admin/organizations`
+- **`app/admin/chats/page.tsx`** — Same refactor; `HotelInfo` → `OrgInfo`
+- **`app/admin/onboarding/page.tsx`** — Added category dropdown (9 options: فندق, مستشفى, جامعة, مطعم, مدرسة, عيادة, جهة حكومية, شركة, أخرى); Arabic text generalized from فندق → مؤسسة
+- **`app/chat/[slug]/page.tsx`** — `HotelData` → `OrgData`; hotel → org state; emoji 🏨 → 🏢; suggestions generalized; links to `/directory`
+- **`components/nav-bar.tsx`** — Brand: فندق ذكي → مؤسسة ذكية; link: `/hotels` → `/directory`; text: تصفح الفنادق → دليل المؤسسات
+- **`app/page.tsx`** — CTA link: `/hotels` → `/directory`; button text: تصفح الفنادق → تصفح المؤسسات
+- **`app/directory/page.tsx`** — NEW: Category cards grid with icons (Hotel, GraduationCap, Stethoscope, etc.), filter by category, `framer-motion` animated transitions, `force-dynamic`
+- **`scripts/verify-db.ts`** — `prisma.hotel` → `prisma.organization`
+
+#### Category Icons
+| Category | Icon | Color |
+|----------|------|-------|
+| hotel | Hotel | amber/orange |
+| university | GraduationCap | blue/indigo |
+| hospital | Stethoscope | red/rose |
+| restaurant | UtensilsCrossed | emerald/green |
+| school | School | cyan/teal |
+| clinic | HeartPulse | pink/fuchsia |
+| government | Landmark | slate/gray |
+| company | Building2 | violet/purple |
+| general | LayoutGrid | indigo/purple |
+
+#### Legacy Files (still present, no longer imported)
+- `lib/hotel-service.ts` — Superseded by `lib/org-service.ts`
+- `app/api/admin/hotels/route.ts` — Superseded by `app/api/admin/organizations/route.ts`
+- `app/hotels/page.tsx` — Superseded by `app/directory/page.tsx`
 
 ---
 

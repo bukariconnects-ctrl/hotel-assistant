@@ -26,11 +26,12 @@ const supabase = getSupabaseBrowserClient();
 const CATEGORIES = ["Policy", "Menu", "Services", "Guide", "General"] as const;
 type Category = (typeof CATEGORIES)[number];
 
-interface HotelInfo {
+interface OrgInfo {
   id: string;
   name: string;
   slug: string;
   description: string | null;
+  category: string;
   status: string;
 }
 
@@ -67,8 +68,8 @@ const INITIAL_STEPS: UploadStep[] = [
 
 export default function AdminPage() {
   const router = useRouter();
-  const [hotel, setHotel] = useState<HotelInfo | null>(null);
-  const [loadingHotel, setLoadingHotel] = useState(true);
+  const [org, setOrg] = useState<OrgInfo | null>(null);
+  const [loadingOrg, setLoadingOrg] = useState(true);
 
   // Upload state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -106,10 +107,10 @@ export default function AdminPage() {
     totalAnalyzed: number;
   } | null>(null);
 
-  const fetchDocuments = useCallback(async (hotelId: string) => {
+  const fetchDocuments = useCallback(async (orgId: string) => {
     setLoadingDocs(true);
     try {
-      const res = await fetch(`/api/admin/documents?hotelId=${hotelId}`);
+      const res = await fetch(`/api/admin/documents?orgId=${orgId}`);
       if (res.ok) {
         const data = await res.json();
         setDocuments(data);
@@ -121,18 +122,18 @@ export default function AdminPage() {
     }
   }, []);
 
-  const fetchStats = useCallback(async (hotelId: string) => {
+  const fetchStats = useCallback(async (orgId: string) => {
     try {
-      const res = await fetch(`/api/admin/stats?hotelId=${hotelId}`);
+      const res = await fetch(`/api/admin/stats?orgId=${orgId}`);
       if (res.ok) setStats(await res.json());
     } catch {
       // ignore
     }
   }, []);
 
-  const fetchRecentActivity = useCallback(async (hotelId: string) => {
+  const fetchRecentActivity = useCallback(async (orgId: string) => {
     try {
-      const res = await fetch(`/api/admin/chats?hotelId=${hotelId}`);
+      const res = await fetch(`/api/admin/chats?orgId=${orgId}`);
       if (res.ok) {
         const data = await res.json();
         setRecentSessions(data.slice(0, 5));
@@ -142,9 +143,9 @@ export default function AdminPage() {
     }
   }, []);
 
-  const fetchInsights = useCallback(async (hotelId: string) => {
+  const fetchInsights = useCallback(async (orgId: string) => {
     try {
-      const res = await fetch(`/api/admin/stats/insights?hotelId=${hotelId}`);
+      const res = await fetch(`/api/admin/stats/insights?orgId=${orgId}`);
       if (res.ok) setInsights(await res.json());
     } catch {
       // ignore
@@ -152,20 +153,20 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
-    async function loadHotel() {
+    async function loadOrg() {
       try {
-        const res = await fetch("/api/admin/hotels");
+        const res = await fetch("/api/admin/organizations");
         if (res.status === 401) {
           router.push("/login?redirect=/admin");
           return;
         }
-        const hotels = await res.json();
-        if (Array.isArray(hotels) && hotels.length > 0) {
-          setHotel(hotels[0]);
-          fetchDocuments(hotels[0].id);
-          fetchStats(hotels[0].id);
-          fetchRecentActivity(hotels[0].id);
-          fetchInsights(hotels[0].id);
+        const orgs = await res.json();
+        if (Array.isArray(orgs) && orgs.length > 0) {
+          setOrg(orgs[0]);
+          fetchDocuments(orgs[0].id);
+          fetchStats(orgs[0].id);
+          fetchRecentActivity(orgs[0].id);
+          fetchInsights(orgs[0].id);
         } else {
           router.push("/admin/onboarding");
           return;
@@ -173,10 +174,10 @@ export default function AdminPage() {
       } catch {
         // Network error
       } finally {
-        setLoadingHotel(false);
+        setLoadingOrg(false);
       }
     }
-    loadHotel();
+    loadOrg();
   }, [router, fetchDocuments, fetchStats, fetchRecentActivity, fetchInsights]);
 
   function resetState() {
@@ -206,7 +207,7 @@ export default function AdminPage() {
   }
 
   async function handleUpload() {
-    if (!selectedFile || !hotel) return;
+    if (!selectedFile || !org) return;
 
     setIsUploading(true);
     resetState();
@@ -225,7 +226,7 @@ export default function AdminPage() {
 
       const formData = new FormData();
       formData.append("file", selectedFile);
-      formData.append("hotelId", hotel.id);
+      formData.append("orgId", org.id);
       formData.append("category", category);
 
       const response = await fetch("/api/admin/documents/upload", {
@@ -244,7 +245,7 @@ export default function AdminPage() {
         setStepStatus(3, "done");
         setResult(data);
         setSelectedFile(null);
-        fetchDocuments(hotel.id);
+        fetchDocuments(org.id);
       }
     } catch (err) {
       setStepStatus(2, "error");
@@ -259,7 +260,7 @@ export default function AdminPage() {
   }
 
   async function handleToggleStatus(doc: DocRecord) {
-    if (!hotel) return;
+    if (!org) return;
     const newStatus = doc.status === "ready" ? "inactive" : "ready";
     setTogglingId(doc.id);
     try {
@@ -281,7 +282,7 @@ export default function AdminPage() {
   }
 
   async function handleDelete() {
-    if (!deleteTarget || !hotel) return;
+    if (!deleteTarget || !org) return;
     setDeleting(true);
     try {
       const res = await fetch(`/api/admin/documents/${deleteTarget.id}`, {
@@ -298,7 +299,7 @@ export default function AdminPage() {
     }
   }
 
-  if (loadingHotel) {
+  if (loadingOrg) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <Loader2 className="w-6 h-6 text-indigo-400 animate-spin" />
@@ -306,7 +307,7 @@ export default function AdminPage() {
     );
   }
 
-  if (!hotel) return null;
+  if (!org) return null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -320,9 +321,9 @@ export default function AdminPage() {
               </div>
             </Link>
             <div>
-              <h1 className="text-lg font-semibold text-white">{hotel.name}</h1>
+              <h1 className="text-lg font-semibold text-white">{org.name}</h1>
               <p className="text-xs text-slate-400">
-                /chat/{hotel.slug} · Dashboard
+                /chat/{org.slug} · Dashboard
               </p>
             </div>
           </div>
@@ -349,7 +350,7 @@ export default function AdminPage() {
               الإعدادات
             </Link>
             <Link
-              href={`/chat/${hotel.slug}`}
+              href={`/chat/${org.slug}`}
               target="_blank"
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >

@@ -17,11 +17,12 @@ import {
 
 const supabase = getSupabaseBrowserClient();
 
-interface HotelInfo {
+interface OrgInfo {
   id: string;
   name: string;
   slug: string;
   description: string | null;
+  category: string;
   welcome_message: string | null;
   contact_phone: string | null;
   website: string | null;
@@ -31,7 +32,7 @@ interface HotelInfo {
 
 export default function AdminSettingsPage() {
   const router = useRouter();
-  const [hotel, setHotel] = useState<HotelInfo | null>(null);
+  const [org, setOrg] = useState<OrgInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -45,23 +46,23 @@ export default function AdminSettingsPage() {
   const [location, setLocation] = useState("");
 
   useEffect(() => {
-    async function loadHotel() {
+    async function loadOrg() {
       try {
-        const res = await fetch("/api/admin/hotels");
+        const res = await fetch("/api/admin/organizations");
         if (res.status === 401) {
           router.push("/login?redirect=/admin/settings");
           return;
         }
-        const hotels = await res.json();
-        if (Array.isArray(hotels) && hotels.length > 0) {
-          const h = hotels[0] as HotelInfo;
-          setHotel(h);
-          setName(h.name);
-          setDescription(h.description ?? "");
-          setWelcomeMessage(h.welcome_message ?? "");
-          setContactPhone(h.contact_phone ?? "");
-          setWebsite(h.website ?? "");
-          setLocation(h.location ?? "");
+        const orgs = await res.json();
+        if (Array.isArray(orgs) && orgs.length > 0) {
+          const o = orgs[0] as OrgInfo;
+          setOrg(o);
+          setName(o.name);
+          setDescription(o.description ?? "");
+          setWelcomeMessage(o.welcome_message ?? "");
+          setContactPhone(o.contact_phone ?? "");
+          setWebsite(o.website ?? "");
+          setLocation(o.location ?? "");
         } else {
           router.push("/admin/onboarding");
         }
@@ -71,19 +72,19 @@ export default function AdminSettingsPage() {
         setLoading(false);
       }
     }
-    loadHotel();
+    loadOrg();
   }, [router]);
 
   async function handleSave() {
-    if (!hotel || !name.trim()) return;
+    if (!org || !name.trim()) return;
     setSaving(true);
     setToast(null);
     try {
-      const res = await fetch("/api/admin/hotels", {
+      const res = await fetch("/api/admin/organizations", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          hotelId: hotel.id,
+          orgId: org.id,
           name: name.trim(),
           description: description.trim() || null,
           welcomeMessage: welcomeMessage.trim() || null,
@@ -94,7 +95,7 @@ export default function AdminSettingsPage() {
       });
       if (res.ok) {
         const updated = await res.json();
-        setHotel({ ...hotel, ...updated });
+        setOrg({ ...org, ...updated });
         setToast({ type: "success", message: "تم حفظ الإعدادات بنجاح." });
       } else {
         const err = await res.json();
@@ -122,7 +123,7 @@ export default function AdminSettingsPage() {
     );
   }
 
-  if (!hotel) return null;
+  if (!org) return null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -136,8 +137,8 @@ export default function AdminSettingsPage() {
               </div>
             </Link>
             <div>
-              <h1 className="text-lg font-semibold text-white">{hotel.name}</h1>
-              <p className="text-xs text-slate-400">/chat/{hotel.slug} · الإعدادات</p>
+              <h1 className="text-lg font-semibold text-white">{org.name}</h1>
+              <p className="text-xs text-slate-400">/chat/{org.slug} · الإعدادات</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -149,7 +150,7 @@ export default function AdminSettingsPage() {
               لوحة التحكم
             </Link>
             <Link
-              href={`/chat/${hotel.slug}`}
+              href={`/chat/${org.slug}`}
               target="_blank"
               className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5"
             >
@@ -271,7 +272,7 @@ export default function AdminSettingsPage() {
                 <span className="text-sm text-slate-500">/chat/</span>
                 <input
                   type="text"
-                  value={hotel.slug}
+                  value={org.slug}
                   readOnly
                   className="flex-1 px-3 py-2.5 rounded-lg bg-slate-800/50 border border-slate-700 text-slate-400 text-sm cursor-not-allowed"
                 />

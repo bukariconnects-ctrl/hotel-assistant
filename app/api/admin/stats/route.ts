@@ -32,21 +32,21 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hotelId = request.nextUrl.searchParams.get("hotelId");
-    if (!hotelId) {
-      return NextResponse.json({ error: "hotelId is required" }, { status: 400 });
+    const orgId = request.nextUrl.searchParams.get("orgId");
+    if (!orgId) {
+      return NextResponse.json({ error: "orgId is required" }, { status: 400 });
     }
 
     // Verify ownership
-    const { data: hotel } = await supabaseAdmin
-      .from("hotels")
+    const { data: org } = await supabaseAdmin
+      .from("organizations")
       .select("id")
-      .eq("id", hotelId)
+      .eq("id", orgId)
       .eq("owner_id", user.id)
       .single();
 
-    if (!hotel) {
-      return NextResponse.json({ error: "Hotel not found" }, { status: 404 });
+    if (!org) {
+      return NextResponse.json({ error: "Organization not found" }, { status: 404 });
     }
 
     // Fetch all 3 counts in parallel
@@ -54,24 +54,23 @@ export async function GET(request: NextRequest) {
       supabaseAdmin
         .from("documents")
         .select("id", { count: "exact", head: true })
-        .eq("hotel_id", hotelId),
+        .eq("org_id", orgId),
       supabaseAdmin
         .from("document_sections")
         .select("id", { count: "exact", head: true })
         .in(
           "document_id",
-          // sub-select: get document IDs for this hotel
           (
             await supabaseAdmin
               .from("documents")
               .select("id")
-              .eq("hotel_id", hotelId)
+              .eq("org_id", orgId)
           ).data?.map((d: { id: string }) => d.id) ?? []
         ),
       supabaseAdmin
         .from("chat_sessions")
         .select("id", { count: "exact", head: true })
-        .eq("hotel_id", hotelId),
+        .eq("org_id", orgId),
     ]);
 
     return NextResponse.json({

@@ -32,30 +32,30 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hotelId = request.nextUrl.searchParams.get("hotelId");
-    if (!hotelId) {
+    const orgId = request.nextUrl.searchParams.get("orgId");
+    if (!orgId) {
       return NextResponse.json(
-        { error: "hotelId is required" },
+        { error: "orgId is required" },
         { status: 400 }
       );
     }
 
     // Verify ownership
-    const { data: hotel } = await supabaseAdmin
-      .from("hotels")
+    const { data: org } = await supabaseAdmin
+      .from("organizations")
       .select("id")
-      .eq("id", hotelId)
+      .eq("id", orgId)
       .eq("owner_id", user.id)
       .single();
 
-    if (!hotel) {
-      return NextResponse.json({ error: "Hotel not found" }, { status: 404 });
+    if (!org) {
+      return NextResponse.json({ error: "Organization not found" }, { status: 404 });
     }
 
     const { data: documents, error } = await supabaseAdmin
       .from("documents")
       .select("id, file_name, file_type, file_size, status, category, created_at")
-      .eq("hotel_id", hotelId)
+      .eq("org_id", orgId)
       .order("created_at", { ascending: false });
 
     if (error) {

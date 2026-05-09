@@ -33,28 +33,28 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const hotelId = request.nextUrl.searchParams.get("hotelId");
-    if (!hotelId) {
-      return NextResponse.json({ error: "hotelId is required" }, { status: 400 });
+    const orgId = request.nextUrl.searchParams.get("orgId");
+    if (!orgId) {
+      return NextResponse.json({ error: "orgId is required" }, { status: 400 });
     }
 
     // Verify ownership
-    const { data: hotel } = await supabaseAdmin
-      .from("hotels")
+    const { data: org } = await supabaseAdmin
+      .from("organizations")
       .select("id, name")
-      .eq("id", hotelId)
+      .eq("id", orgId)
       .eq("owner_id", user.id)
       .single();
 
-    if (!hotel) {
-      return NextResponse.json({ error: "Hotel not found" }, { status: 404 });
+    if (!org) {
+      return NextResponse.json({ error: "Organization not found" }, { status: 404 });
     }
 
-    // Get session IDs for this hotel
+    // Get session IDs for this org
     const { data: sessions } = await supabaseAdmin
       .from("chat_sessions")
       .select("id")
-      .eq("hotel_id", hotelId);
+      .eq("org_id", orgId);
 
     const sessionIds = (sessions ?? []).map((s: { id: string }) => s.id);
 
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
 
     if (apiKey && userQuestions.length >= 2) {
       try {
-        const prompt = `Analyze these recent guest questions from a hotel AI assistant and identify the top 3 topics guests are asking about. Be concise.
+        const prompt = `Analyze these recent user questions from an AI assistant and identify the top 3 topics users are asking about. Be concise.
 
 Guest questions:
 ${userQuestions.map((q, i) => `${i + 1}. ${q}`).join("\n")}

@@ -13,29 +13,30 @@ datasource db {
   extensions = [pgvector(map: "vector")]
 }
 
-model Hotel {
-  id          String     @id @default(cuid())
-  name        String
+model Organization {
+  id             String     @id @default(cuid())
+  name           String
   slug           String     @unique
   description    String?
+  category       String     @default("general")
   welcomeMessage String?    @map("welcome_message")
   contactPhone   String?    @map("contact_phone")
   website        String?
   location       String?
   ownerId        String?    @map("owner_id")
   status         String     @default("active")
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
 
   documents    Document[]
   chatSessions ChatSession[]
 
-  @@map("hotels")
+  @@map("organizations")
 }
 
 model Document {
   id         String   @id @default(cuid())
-  hotelId    String   @map("hotel_id")
+  orgId      String   @map("org_id")
   fileName   String   @map("file_name")
   fileType   String   @map("file_type")
   fileSize   Int      @map("file_size")
@@ -45,7 +46,7 @@ model Document {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  hotel    Hotel             @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   sections DocumentSection[]
 
   @@map("documents")
@@ -66,12 +67,12 @@ model DocumentSection {
 
 model ChatSession {
   id        String   @id @default(cuid())
-  hotelId   String   @map("hotel_id")
+  orgId     String   @map("org_id")
   guestName String?  @map("guest_name")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  hotel    Hotel         @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   messages ChatMessage[]
 
   @@map("chat_sessions")
