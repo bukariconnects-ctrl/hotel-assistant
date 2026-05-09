@@ -101,7 +101,7 @@ export default function Home() {
             custom={0}
           >
             <span className="inline-block text-xs font-semibold tracking-wider text-indigo-400 bg-indigo-950 border border-indigo-800 px-3 py-1 rounded-full mb-6">
-              مساعد فندقي مدعوم بالذكاء الاصطناعي
+              مساعد مؤسستك مدعوم بالذكاء الاصطناعي
             </span>
           </motion.div>
 
@@ -127,7 +127,7 @@ export default function Home() {
             variants={fadeUp}
             custom={2}
           >
-            ارفع مستندات فندقك. احصل على مساعد ذكي متعدد اللغات
+            ارفع مستندات مؤسستك. احصل على مساعد ذكي متعدد اللغات
             يجيب على أسئلة الضيوف فوراً — بناءً على سياساتك
             وقوائمك وخدماتك الفعلية.
           </motion.p>
@@ -143,7 +143,7 @@ export default function Home() {
               href="/register"
               className="px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base transition-colors shadow-lg shadow-indigo-600/20"
             >
-              سجّل فندقك
+              سجّل مؤسستك
             </Link>
             <Link
               href="/directory"
@@ -167,7 +167,7 @@ export default function Home() {
             custom={0}
           >
             <h2 className="text-3xl font-bold text-white">
-              كل ما يحتاجه فندقك
+              كل ما يحتاجه مؤسستك
             </h2>
             <p className="mt-3 text-slate-400 max-w-xl mx-auto">
               حل مساعد ذكي متكامل — جاهز في دقائق وليس أشهر.
